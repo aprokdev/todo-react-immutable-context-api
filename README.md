@@ -1,6 +1,7 @@
-Simple todo app based on React and JS
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Anton2501/todo/build)
 [![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest)
+
+Simple todo app based on React and JS
 
 It is simple todo app, based on React and Javascript. Your todos will be saved in browser's LocalStorage. You can mark todos as complited, also edit them or delete. You can hide completed todos by clicking "Hide completed" checkbox, which appear as soon as you complete at least one todo.
 
