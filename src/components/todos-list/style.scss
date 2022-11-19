@@ -1,0 +1,16 @@
+@import '~styles/vars';
+
+.todo-list {
+    &__header {
+        margin-bottom: 32px;
+        cursor: pointer;
+    }
+
+    &__check-group {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        margin-top: 52px;
+        margin-right: 20px;
+    }
+}

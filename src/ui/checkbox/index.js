@@ -1,0 +1,49 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex, jsx-a11y/no-noninteractive-element-interactions */
+import PropTypes from 'prop-types';
+import React from 'react';
+import { IconCheck } from './icon';
+import './style.scss';
+
+function Checkbox({ className, checked, onChange, id, testId = 'checkbox' }) {
+    const inputRef = React.useRef(null);
+
+    const onKeyDown = React.useCallback((event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            inputRef.current.click();
+        }
+    }, []);
+
+    return (
+        <span className={`checkbox${className ? ` ${className}` : ''}`} data-testid={testId}>
+            <input
+                type="checkbox"
+                className="checkbox__input"
+                checked={checked}
+                id={id}
+                onChange={onChange}
+                ref={inputRef}
+                data-testid={`${testId}-input`}
+            />
+            <label
+                className="checkbox__square"
+                htmlFor={id}
+                tabIndex={0}
+                onKeyDown={onKeyDown}
+                data-testid={`${testId}-square`}
+            >
+                {checked && <IconCheck color="#fff" />}
+            </label>
+        </span>
+    );
+}
+
+Checkbox.propTypes = {
+    className: PropTypes.string,
+    checked: PropTypes.bool,
+    onChange: PropTypes.func.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    testId: PropTypes.string,
+};
+
+export default Checkbox;
