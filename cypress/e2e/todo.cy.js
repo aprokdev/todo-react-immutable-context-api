@@ -164,12 +164,12 @@ describe('My First E2E Test', () => {
 
         const header = cy.get('.todo-list__header');
 
-        cy.get('.todo-list__header').should('contain', 'Tasks');
+        cy.get('.todo-list__header').should('contain', 'Sort tasks by: CREATION DATE');
         cy.getLocalStorage('sorting').should('equal', JSON.stringify(sortState.BY_DATE));
 
         // after first click on header sorts from A to Z:
         header.click();
-        cy.get('.todo-list__header').should('contain', 'Tasks: A-Z');
+        cy.get('.todo-list__header').should('contain', 'Sort tasks by: ALPHABET');
 
         // checking saving sorting in LocalStorage:
         cy.getLocalStorage('sorting').should('equal', JSON.stringify(sortState.ALPHABET));
@@ -189,7 +189,7 @@ describe('My First E2E Test', () => {
 
         // after second click on header sorts from Z to A:
         header.click();
-        cy.get('.todo-list__header').should('contain', 'Tasks: Z-A');
+        cy.get('.todo-list__header').should('contain', 'Sort tasks by: ALPHABET-REVERSE');
 
         // checking saving sorting in LocalStorage:
         cy.getLocalStorage('sorting').should('equal', JSON.stringify(sortState.ALPHABET_REVERSE));
@@ -209,7 +209,7 @@ describe('My First E2E Test', () => {
 
         // after third click on header sorts by creation time:
         header.click();
-        cy.get('.todo-list__header').should('contain', 'Tasks');
+        cy.get('.todo-list__header').should('contain', 'Sort tasks by: CREATION DATE');
 
         // checking saving sorting in LocalStorage:
         cy.getLocalStorage('sorting').should('equal', JSON.stringify(sortState.BY_DATE));

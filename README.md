@@ -11,7 +11,6 @@ Install all dependencies by running `npm install` or `yarn install`
 Srart development by `npm start` or `yarn start`
 to make a build run `npm run build` or `yarn build`
 
-
 To ensure, that sorting works, you can put the following code to console and press Enter, then update page and change sorting by clicking on "Sort tasks by:"
 
 ```

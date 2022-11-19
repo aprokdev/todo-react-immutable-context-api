@@ -181,12 +181,12 @@ describe('Todo Functionality', () => {
         await user.click(addTodoBtn);
         expect(screen.queryByText('321123')).toBeInTheDocument();
 
-        const header = screen.queryByText(/tasks/i);
+        const header = screen.queryByText(/Sort tasks by: CREATION DATE/i);
         const regExpToGet = /Test todo|CTest todo number two|ATest todo number three|BTest todo number four|321123/;
 
         // after first click on header sorts from A to Z:
         await user.click(header);
-        expect(header.innerHTML).toBe('Tasks: A-Z');
+        expect(header.innerHTML).toBe('Sort tasks by: ALPHABET');
         // checking saving sorting in LocalStorage:
         expect(JSON.parse(localStorage.getItem('sorting'))).toBe(sortState.ALPHABET);
 
@@ -202,7 +202,7 @@ describe('Todo Functionality', () => {
 
         // after second click on header sorts from Z to A:
         await user.click(header);
-        expect(header.innerHTML).toBe('Tasks: Z-A');
+        expect(header.innerHTML).toBe('Sort tasks by: ALPHABET-REVERSE');
         // checking saving sorting in LocalStorage:
         expect(JSON.parse(localStorage.getItem('sorting'))).toBe(sortState.ALPHABET_REVERSE);
 
@@ -218,7 +218,7 @@ describe('Todo Functionality', () => {
 
         // after third click on header sorts by creation time:
         await user.click(header);
-        expect(header.innerHTML).toBe('Tasks');
+        expect(header.innerHTML).toBe('Sort tasks by: CREATION DATE');
         // checking saving sorting in LocalStorage:
         expect(JSON.parse(localStorage.getItem('sorting'))).toBe(sortState.BY_DATE);
 
