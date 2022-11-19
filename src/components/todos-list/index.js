@@ -55,9 +55,10 @@ function TodosList() {
                     ref={headerRef}
                     onKeyDown={onKeyDown}
                 >
-                    Tasks
-                    {sorting === sortState.ALPHABET && ': A-Z'}
-                    {sorting === sortState.ALPHABET_REVERSE && ': Z-A'}
+                    Sort tasks by:
+                    {sorting === sortState.ALPHABET && ' CREATION DATE'}
+                    {sorting === sortState.ALPHABET && ' ALPHABET'}
+                    {sorting === sortState.ALPHABET_REVERSE && ' ALPHABET-REVERSE'}
                 </h4>
             )}
             <div>
