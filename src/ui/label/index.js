@@ -4,7 +4,11 @@ import './style.scss';
 
 function Label({ htmlFor, children, className, testId = 'label' }) {
     return (
-        <label className={`label${className ? ` ${className}` : ''}`} htmlFor={htmlFor} data-testid={testId}>
+        <label
+            className={`label${className ? ` ${className}` : ''}`}
+            htmlFor={htmlFor}
+            data-testid={testId}
+        >
             {children}
         </label>
     );

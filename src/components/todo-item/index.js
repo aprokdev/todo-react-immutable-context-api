@@ -35,7 +35,12 @@ function TodoItem({ data, onChangeTodo, onDeleteTodo, onEditTodo, testId }) {
         <Fade bottom>
             <div className="todo-item" data-testid={`todo-item${testId ? `-${testId}` : ''}`}>
                 <div className="todo-item__check-group">
-                    <Checkbox checked={isCompleted} onChange={onChangeTodo} id={id} testId={`${label}-cb`} />
+                    <Checkbox
+                        checked={isCompleted}
+                        onChange={onChangeTodo}
+                        id={id}
+                        testId={`${label}-cb`}
+                    />
                     {editing ? (
                         <TextareaAutosize
                             value={value}

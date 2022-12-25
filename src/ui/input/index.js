@@ -3,7 +3,16 @@ import React from 'react';
 import './style.scss';
 
 const Input = React.forwardRef((props, ref) => {
-    const { value, className, onChange, onBlur, id, type = 'text', placeholder, testId = 'input' } = props;
+    const {
+        value,
+        className,
+        onChange,
+        onBlur,
+        id,
+        type = 'text',
+        placeholder,
+        testId = 'input',
+    } = props;
     return (
         <input
             type={type}
