@@ -55,7 +55,7 @@ function TodosList() {
                     ref={headerRef}
                     onKeyDown={onKeyDown}
                 >
-                    Sort tasks by:
+                    ✨ Sort tasks by:
                     {sorting === sortState.BY_DATE && ' CREATION DATE'}
                     {sorting === sortState.ALPHABET && ' ALPHABET'}
                     {sorting === sortState.ALPHABET_REVERSE && ' ALPHABET-REVERSE'}
