@@ -1,13 +1,8 @@
+import { List, Map } from 'immutable';
 import React from 'react';
 
-// import { Map, List } from "immutable";
-
 export const TodoContext = React.createContext({
-    list: [],
-    addTodo: () => undefined,
-    onChangeTodo: () => undefined,
-    onDeleteTodo: () => undefined,
-    onEditTodo: () => undefined,
+    listTodos: [],
     leaveOnlyChecked: false,
     setLeaveOnlyChecked: () => undefined,
     headerClickedTimes: 0,
@@ -30,12 +25,92 @@ export const sortState = {
     ALPHABET_REVERSE: 'FROM_Z_TO_A',
 };
 
-export function TodoProvider({ children }) {
-    const localState = JSON.parse(localStorage.getItem('todo-list')) || [];
-    const [list, updateList] = React.useState(localState);
+export const sortingText = {
+    CREATION_DATE: 'CREATION DATE',
+    ALPHABET: 'ALPHABET',
+    ALPHABET_REVERSE: 'ALPHABET-REVERSE',
+};
 
-    // Immutable.js
-    // const [list, updateList] = React.useState(List(localState.map((item) => Map(item))));
+function findIndex(state, id) {
+    return state.findIndex((data) => String(id) === String(data.get('id')));
+}
+
+export const actionTypes = {
+    ADD_TODO: 'ADD_TODO',
+    CHECK_TODO: 'CHECK_TODO',
+    DELETE_TODO: 'DELETE_TODO',
+    EDIT_TODO: 'EDIT_TODO',
+    SORT_BY_DATE: 'SORT_BY_DATE',
+    SORT_BY_ALPHABET: 'SORT_BY_ALPHABET',
+    SORT_BY_ALPHABET_REVERSE: 'SORT_BY_ALPHABET_REVERSE',
+};
+
+const localTodos = JSON.parse(localStorage.getItem('todo-list')) || [];
+const localSorting = JSON.parse(localStorage.getItem('sorting')) || `${sortingText.CREATION_DATE}`;
+
+const initialState = Map({
+    listTodos: List(localTodos),
+    sortingTitle: localSorting,
+});
+
+function todosReducer(state, action) {
+    switch (action.type) {
+        case actionTypes.ADD_TODO:
+            return state.push(
+                Map({
+                    id: +new Date(),
+                    label: action.text.trim(),
+                    isCompleted: false,
+                    created: +new Date(),
+                })
+            );
+
+        case actionTypes.CHECK_TODO:
+            return state.update(findIndex(state, action.id), (data) =>
+                data.set('isCompleted', action.checked)
+            );
+
+        case actionTypes.DELETE_TODO:
+            return state.delete(findIndex(state, action.id));
+
+        case actionTypes.EDIT_TODO:
+            return state.update(findIndex(state, action.id), (data) =>
+                data.set('label', action.text)
+            );
+
+        case actionTypes.SORT_BY_DATE:
+            return state.sort((a, b) => {
+                if (a.get('created') < b.get('created')) {
+                    return -1;
+                }
+                return 1;
+            });
+
+        case actionTypes.SORT_BY_ALPHABET:
+            return state.sort((a, b) => {
+                if (a.get('label') < b.get('label')) {
+                    return -1;
+                }
+                return 1;
+            });
+
+        case actionTypes.SORT_BY_ALPHABET_REVERSE:
+            return state
+                .sort((a, b) => {
+                    if (a.get('label') < b.get('label')) {
+                        return -1;
+                    }
+                    return 1;
+                })
+                .reverse();
+
+        default:
+            return state;
+    }
+}
+
+export function TodoProvider({ children }) {
+    const [listTodos, dispatch] = React.useReducer(todosReducer, List(localTodos));
 
     const [isCompletedHidden, setHideCompleted] = React.useState(false);
 
@@ -43,162 +118,91 @@ export function TodoProvider({ children }) {
     const [sorting, updateSorting] = React.useState(localSorting);
     const sortingRef = React.useRef(sortState.BY_DATE);
 
-    React.useEffect(() => {
-        if (sorting === sortState.BY_DATE && sortingRef.current !== sortState.BY_DATE) {
-            updateList(
-                [...list].sort((a, b) => {
-                    if (a.created < b.created) {
-                        return -1;
-                    }
-                    return 1;
-                })
-            );
-            sortingRef.current = sortState.BY_DATE;
+    // React.useEffect(() => {
+    //     if (sorting === sortState.BY_DATE && sortingRef.current !== sortState.BY_DATE) {
+    //         // updateList(
+    //         //     [...list].sort((a, b) => {
+    //         //         if (a.created < b.created) {
+    //         //             return -1;
+    //         //         }
+    //         //         return 1;
+    //         //     })
+    //         // );
+    //         // sortingRef.current = sortState.BY_DATE;
 
-            // Immutable.js
-            // updateList(
-            //     [...list.toArray()].map(item => item.toObject()).sort((a, b) => {
-            //         if (a.created < b.created) {
-            //             return -1;
-            //         }
-            //         return 1;
-            //     }).map(item => Map(item))
-            // );
-            // sortingRef.current = sortState.BY_DATE;
-        }
+    //         // Immutable.js
+    //         updateTodos(
+    //             listTodos
+    //                 .map((item) => item.toObject())
+    //                 .sort((a, b) => {
+    //                     if (a.created < b.created) {
+    //                         return -1;
+    //                     }
+    //                     return 1;
+    //                 })
+    //                 .map((item) => Map(item))
+    //         );
+    //         sortingRef.current = sortState.BY_DATE;
+    //     }
 
-        if (sorting === sortState.ALPHABET && sortingRef.current !== sortState.ALPHABET) {
-            updateList(
-                [...list].sort((a, b) => {
-                    if (a.label < b.label) {
-                        return -1;
-                    }
-                    return 1;
-                })
-            );
-            sortingRef.current = sortState.ALPHABET;
+    //     if (sorting === sortState.ALPHABET && sortingRef.current !== sortState.ALPHABET) {
+    //         updateTodos(
+    //             [...listTodos].sort((a, b) => {
+    //                 if (a.label < b.label) {
+    //                     return -1;
+    //                 }
+    //                 return 1;
+    //             })
+    //         );
+    //         sortingRef.current = sortState.ALPHABET;
 
-            // Immutable.js
-            // updateList(
-            //     [...list.toArray()].map(item => item.toObject()).sort((a, b) => {
-            //         if (a.label < b.label) {
-            //             return -1;
-            //         }
-            //         return 1;
-            //     }).map(item => Map(item))
-            // );
-            // sortingRef.current = sortState.ALPHABET;
-        }
+    //         // Immutable.js
+    //         // updateList(
+    //         //     [...list.toArray()].map(item => item.toObject()).sort((a, b) => {
+    //         //         if (a.label < b.label) {
+    //         //             return -1;
+    //         //         }
+    //         //         return 1;
+    //         //     }).map(item => Map(item))
+    //         // );
+    //         // sortingRef.current = sortState.ALPHABET;
+    //     }
 
-        if (
-            sorting === sortState.ALPHABET_REVERSE &&
-            sortingRef.current !== sortState.ALPHABET_REVERSE
-        ) {
-            updateList(
-                [...list]
-                    .sort((a, b) => {
-                        if (a.label < b.label) {
-                            return -1;
-                        }
-                        return 1;
-                    })
-                    .reverse()
-            );
-            sortingRef.current = sortState.ALPHABET_REVERSE;
+    //     if (
+    //         sorting === sortState.ALPHABET_REVERSE &&
+    //         sortingRef.current !== sortState.ALPHABET_REVERSE
+    //     ) {
+    //         updateTodos(
+    //             [...listTodos]
+    //                 .sort((a, b) => {
+    //                     if (a.label < b.label) {
+    //                         return -1;
+    //                     }
+    //                     return 1;
+    //                 })
+    //                 .reverse()
+    //         );
+    //         sortingRef.current = sortState.ALPHABET_REVERSE;
 
-            // Immutable.js
-            // updateList(
-            //     [...list.toArray()]
-            //         .map(item => item.toObject())
-            //         .sort((a, b) => {
-            //             if (a.label < b.label) {
-            //                 return -1;
-            //             }
-            //             return 1;
-            //         })
-            //         .reverse()
-            //         .map(item => Map(item))
-            // );
-            sortingRef.current = sortState.ALPHABET_REVERSE;
-        }
-    }, [sorting, list]);
-
-    const addTodo = React.useCallback(
-        (text) => {
-            const updatedList = [...list];
-            updatedList.push({
-                id: +new Date(),
-                label: text.trim(),
-                isCompleted: false,
-                created: +new Date(),
-            });
-            updateList(updatedList);
-
-            // Immutable.js
-            // const updatedList = list.push(Map({
-            //     id: +new Date(),
-            //     label: text.trim(),
-            //     isCompleted: false,
-            //     created: +new Date(),
-            // }));
-            // updateList(updatedList);
-        },
-        [list, updateList]
-    );
-
-    const onChangeTodo = React.useCallback(
-        (e) => {
-            const updatedList = list.map((item) => {
-                if (String(e.target.id) === String(item.id)) {
-                    return { ...item, isCompleted: e.target.checked };
-                }
-                return item;
-            });
-            updateList(updatedList);
-
-            // Immutable.js
-            // const index = list.findIndex((data) => String(e.target.id) === String(data.get('id')));
-            // const updatedList = list.update(index, (data) => data.set('isCompleted', e.target.checked));
-            // updateList(updatedList);
-        },
-        [list, updateList]
-    );
-
-    const onDeleteTodo = React.useCallback(
-        (id) => {
-            const arr = [...list];
-            const index = arr.findIndex((item) => String(id) === String(item.id));
-            arr.splice(index, 1);
-            updateList(arr);
-
-            // Immutable.js
-            // const index = list.findIndex((data) => String(id) === String(data.get('id')));
-            // const updatedList = list.delete(index);
-            // updateList(updatedList);
-        },
-        [list, updateList]
-    );
-
-    const onEditTodo = React.useCallback(
-        (text, id) => {
-            const updatedList = list.map((item) => {
-                if (String(id) === String(item.id)) {
-                    return { ...item, label: text };
-                }
-                return item;
-            });
-            updateList(updatedList);
-
-            // Immutable.js
-            // const index = list.findIndex((data) => String(id) === String(data.get('id')));
-            // const updatedList = list.update(index, (data) => data.set('label', text));
-            // updateList(updatedList);
-        },
-        [list, updateList]
-    );
+    //         // Immutable.js
+    //         // updateList(
+    //         //     [...list.toArray()]
+    //         //         .map(item => item.toObject())
+    //         //         .sort((a, b) => {
+    //         //             if (a.label < b.label) {
+    //         //                 return -1;
+    //         //             }
+    //         //             return 1;
+    //         //         })
+    //         //         .reverse()
+    //         //         .map(item => Map(item))
+    //         // );
+    //         sortingRef.current = sortState.ALPHABET_REVERSE;
+    //     }
+    // }, [sorting, listTodos]);
 
     React.useEffect(() => {
-        const val = list.length ? list : null;
+        const val = listTodos.size ? listTodos : null;
 
         // Immutable.js
         // let val = null;
@@ -206,7 +210,7 @@ export function TodoProvider({ children }) {
         //     val = list.toArray();
         // }
         localStorage.setItem('todo-list', JSON.stringify(val));
-    }, [list]);
+    }, [listTodos]);
 
     React.useEffect(() => {
         localStorage.setItem('sorting', JSON.stringify(sorting));
@@ -214,27 +218,14 @@ export function TodoProvider({ children }) {
 
     const value = React.useMemo(
         () => ({
-            list,
-            addTodo,
-            onChangeTodo,
-            onDeleteTodo,
-            onEditTodo,
+            listTodos,
+            dispatch,
             isCompletedHidden,
             setHideCompleted,
             sorting,
             updateSorting,
         }),
-        [
-            list,
-            addTodo,
-            onChangeTodo,
-            onDeleteTodo,
-            onEditTodo,
-            isCompletedHidden,
-            setHideCompleted,
-            sorting,
-            updateSorting,
-        ]
+        [listTodos, dispatch, isCompletedHidden, setHideCompleted, sorting, updateSorting]
     );
 
     return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

@@ -2,39 +2,34 @@
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
-import Fade from 'react-reveal/Fade';
 import Checkbox from '~ui/checkbox';
 import Label from '~ui/label';
 import TodoItem from '~components/todo-item';
-import { sortState, useTodos } from '~todo-context/index';
+import { sortState } from '~todo-context/index';
 import './style.scss';
 
-function TodosList() {
-    const {
-        list,
-        onChangeTodo,
-        onDeleteTodo,
-        onEditTodo,
-        isCompletedHidden,
-        setHideCompleted,
-        sorting,
-        updateSorting,
-    } = useTodos();
-
-    const onHeaderlickHeader = React.useCallback(() => {
-        if (sorting === sortState.BY_DATE) {
-            updateSorting(sortState.ALPHABET);
-            return;
-        }
-        if (sorting === sortState.ALPHABET) {
-            updateSorting(sortState.ALPHABET_REVERSE);
-            return;
-        }
-        if (sorting === sortState.ALPHABET_REVERSE) {
-            updateSorting(sortState.BY_DATE);
-            return;
-        }
-    }, [sorting, updateSorting]);
+function TodosList({
+    listTodos,
+    dispatch,
+    isCompletedHidden,
+    setHideCompleted,
+    sorting,
+    updateSorting,
+}) {
+    // const onHeaderlickHeader = React.useCallback(() => {
+    //     if (sorting === sortState.BY_DATE) {
+    //         updateSorting(sortState.ALPHABET);
+    //         return;
+    //     }
+    //     if (sorting === sortState.ALPHABET) {
+    //         updateSorting(sortState.ALPHABET_REVERSE);
+    //         return;
+    //     }
+    //     if (sorting === sortState.ALPHABET_REVERSE) {
+    //         updateSorting(sortState.BY_DATE);
+    //         return;
+    //     }
+    // }, [sorting, updateSorting]);
 
     const headerRef = React.useRef(null);
 
@@ -47,10 +42,10 @@ function TodosList() {
 
     return (
         <React.Fragment>
-            {list.length > 0 && (
+            {listTodos.size > 0 && (
                 <h4
                     className="todo-list__header"
-                    onClick={onHeaderlickHeader}
+                    // onClick={onHeaderlickHeader}
                     tabIndex="0"
                     ref={headerRef}
                     onKeyDown={onKeyDown}
@@ -63,49 +58,43 @@ function TodosList() {
             )}
             <div>
                 {!isCompletedHidden &&
-                    list.map((todo) => {
+                    listTodos.map((todo) => {
                         return (
                             <TodoItem
-                                key={todo.id}
-                                onChangeTodo={onChangeTodo}
-                                onDeleteTodo={onDeleteTodo}
-                                onEditTodo={onEditTodo}
-                                testId={todo.id}
+                                key={todo.get('id')}
                                 data={todo}
+                                dispatch={dispatch}
+                                testId={todo.get('id')}
                             />
                         );
                     })}
                 {isCompletedHidden &&
-                    list
+                    listTodos
                         .filter(({ isCompleted }) => !isCompleted)
                         .map((todo) => {
                             return (
                                 <TodoItem
-                                    key={todo.id}
-                                    onChangeTodo={onChangeTodo}
-                                    onDeleteTodo={onDeleteTodo}
-                                    onEditTodo={onEditTodo}
-                                    testId={todo.id}
+                                    key={todo.get('id')}
                                     data={todo}
+                                    dispatch={dispatch}
+                                    testId={todo.get('id')}
                                 />
                             );
                         })}
             </div>
-            {list.length > 0 && list.find(({ isCompleted }) => isCompleted) && (
-                <Fade bottom>
-                    <div className="todo-list__check-group">
-                        <Checkbox
-                            checked={isCompletedHidden}
-                            onChange={(e) => setHideCompleted(e.target.checked)}
-                            id="#sort-checked"
-                            testId="sort-checked"
-                        />
-                        <Label htmlFor="#sort-checked">Hide completed</Label>
-                    </div>
-                </Fade>
+            {listTodos.size > 0 && listTodos.find((data) => data.get('isCompleted')) && (
+                <div className="todo-list__check-group">
+                    <Checkbox
+                        checked={isCompletedHidden}
+                        onChange={(e) => setHideCompleted(e.target.checked)}
+                        id="#sort-checked"
+                        testId="sort-checked"
+                    />
+                    <Label htmlFor="#sort-checked">Hide completed</Label>
+                </div>
             )}
         </React.Fragment>
     );
 }
 
-export default TodosList;
+export default React.memo(TodosList);

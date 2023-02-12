@@ -5,19 +5,19 @@ import Fade from 'react-reveal/Fade';
 import Checkbox from '~ui/checkbox';
 import Label from '~ui/label';
 import TextareaAutosize from '~ui/textarea-autosize';
+import { actionTypes } from '../../todo-context';
+import TodoButton from '../todo-button';
 import './style.scss';
 
-function TodoItem({ data, onChangeTodo, onDeleteTodo, onEditTodo, testId }) {
-    // Immutable.js
-    // const { id, label, isCompleted, created } = data.toObject();
-    const { id, label, isCompleted, created } = data;
+function TodoItem({ data, dispatch, testId }) {
+    const { id, label, isCompleted, created } = data.toObject();
     const [editing, setEditing] = React.useState(false);
     const [value, setValue] = React.useState(label);
 
     const onBlurInput = React.useCallback(() => {
-        onEditTodo(value, id);
+        dispatch({ type: actionTypes.EDIT_TODO, text: value, id });
         setEditing(false);
-    }, [id, value, onEditTodo, setEditing]);
+    }, [id, value, setEditing, dispatch]);
 
     const date = React.useMemo(() => {
         const date = new Date(created);
@@ -37,7 +37,9 @@ function TodoItem({ data, onChangeTodo, onDeleteTodo, onEditTodo, testId }) {
                 <div className="todo-item__check-group">
                     <Checkbox
                         checked={isCompleted}
-                        onChange={onChangeTodo}
+                        onChange={({ target }) =>
+                            dispatch({ type: actionTypes.CHECK_TODO, id, checked: target.checked })
+                        }
                         id={id}
                         testId={`${label}-cb`}
                     />
@@ -58,25 +60,16 @@ function TodoItem({ data, onChangeTodo, onDeleteTodo, onEditTodo, testId }) {
                     )}
                 </div>
                 <span className="todo-item__created">{date}</span>
-                <button
-                    type="button"
-                    onClick={() => setEditing(true)}
-                    disabled={false}
-                    className="todo-item__action-btn"
-                    data-testid={`${label}-edit`}
-                >
+                <TodoButton onClick={() => setEditing(true)} testid={`${label}-edit`}>
                     Edit
-                </button>
+                </TodoButton>
                 <span className="todo-item__separator">/</span>
-                <button
-                    type="button"
-                    onClick={() => onDeleteTodo(id)}
-                    disabled={false}
-                    className="todo-item__action-btn"
-                    data-testid={`${label}-delete`}
+                <TodoButton
+                    onClick={() => dispatch({ type: actionTypes.DELETE_TODO, id })}
+                    testid={`${label}-delete`}
                 >
                     Delete
-                </button>
+                </TodoButton>
             </div>
         </Fade>
     );
@@ -89,10 +82,8 @@ TodoItem.propTypes = {
         label: PropTypes.string,
         created: PropTypes.number,
     }),
-    onChangeTodo: PropTypes.func,
-    onDeleteTodo: PropTypes.func,
-    onEditTodo: PropTypes.func,
+    dispatch: PropTypes.func,
     testId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-export default TodoItem;
+export default React.memo(TodoItem);
