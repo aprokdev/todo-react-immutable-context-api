@@ -5,6 +5,8 @@ Simple todo app based on React and JS
 
 It is simple todo app, based on React and Javascript. Your todos will be saved in browser's LocalStorage. You can mark todos as complited, also edit them or delete. You can hide completed todos by clicking "Hide completed" checkbox, which appear as soon as you complete at least one todo.
 
+In this project I used Immutable.js library, to improve performance
+
 How to start:
 
 Install all dependencies by running `npm install` or `yarn install`
@@ -14,7 +16,7 @@ to make a build run `npm run build` or `yarn build`
 To ensure, that sorting works, you can put the following code to console and press Enter, then update page and change sorting by clicking on "Sort tasks by:"
 
 ```
-    localStorage.setItem('todo-list', JSON.stringify([
+    localStorage.setItem('listTodos', JSON.stringify([
         { id: '1660138005899', created: 1660138005899, isCompleted: true, label: 'asds dsaddbsaddft' },
         { id: '1660138010767', created: 1660138010767, isCompleted: true, label: 'pouipiuoiuou' },
         { id: '1660138025187', created: 1660138025187, isCompleted: false, label: 'werewrewr' },
