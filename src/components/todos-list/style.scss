@@ -1,11 +1,6 @@
 @import '~styles/vars';
 
 .todo-list {
-    &__header {
-        margin-bottom: 32px;
-        cursor: pointer;
-    }
-
     &__check-group {
         display: flex;
         align-items: center;

@@ -1,14 +1,9 @@
 import { List, Map } from 'immutable';
 import React from 'react';
+import { todosReducer } from './reducer';
+import { sortingText } from './reducer';
 
-export const TodoContext = React.createContext({
-    listTodos: [],
-    leaveOnlyChecked: false,
-    setLeaveOnlyChecked: () => undefined,
-    headerClickedTimes: 0,
-    countClickHeader: () => undefined,
-});
-
+export const TodoContext = React.createContext();
 TodoContext.displayName = 'TodoContext';
 
 export function useTodos() {
@@ -19,213 +14,43 @@ export function useTodos() {
     return context;
 }
 
-export const sortState = {
-    BY_DATE: 'BY_CREATION_DATE',
-    ALPHABET: 'FROM_A_TO_Z',
-    ALPHABET_REVERSE: 'FROM_Z_TO_A',
-};
+// const localState = JSON.parse(localStorage.getItem('todo-state'));
+// const localTodos = localState ? localState.listTodos : [];
+// const localSorting = localState ? localState.sortingTitle : sortingText.CREATION_DATE;
 
-export const sortingText = {
-    CREATION_DATE: 'CREATION DATE',
-    ALPHABET: 'ALPHABET',
-    ALPHABET_REVERSE: 'ALPHABET-REVERSE',
-};
-
-function findIndex(state, id) {
-    return state.findIndex((data) => String(id) === String(data.get('id')));
-}
-
-export const actionTypes = {
-    ADD_TODO: 'ADD_TODO',
-    CHECK_TODO: 'CHECK_TODO',
-    DELETE_TODO: 'DELETE_TODO',
-    EDIT_TODO: 'EDIT_TODO',
-    SORT_BY_DATE: 'SORT_BY_DATE',
-    SORT_BY_ALPHABET: 'SORT_BY_ALPHABET',
-    SORT_BY_ALPHABET_REVERSE: 'SORT_BY_ALPHABET_REVERSE',
-};
-
-const localTodos = JSON.parse(localStorage.getItem('todo-list')) || [];
-const localSorting = JSON.parse(localStorage.getItem('sorting')) || `${sortingText.CREATION_DATE}`;
-
-const initialState = Map({
-    listTodos: List(localTodos),
-    sortingTitle: localSorting,
-});
-
-function todosReducer(state, action) {
-    switch (action.type) {
-        case actionTypes.ADD_TODO:
-            return state.push(
-                Map({
-                    id: +new Date(),
-                    label: action.text.trim(),
-                    isCompleted: false,
-                    created: +new Date(),
-                })
-            );
-
-        case actionTypes.CHECK_TODO:
-            return state.update(findIndex(state, action.id), (data) =>
-                data.set('isCompleted', action.checked)
-            );
-
-        case actionTypes.DELETE_TODO:
-            return state.delete(findIndex(state, action.id));
-
-        case actionTypes.EDIT_TODO:
-            return state.update(findIndex(state, action.id), (data) =>
-                data.set('label', action.text)
-            );
-
-        case actionTypes.SORT_BY_DATE:
-            return state.sort((a, b) => {
-                if (a.get('created') < b.get('created')) {
-                    return -1;
-                }
-                return 1;
-            });
-
-        case actionTypes.SORT_BY_ALPHABET:
-            return state.sort((a, b) => {
-                if (a.get('label') < b.get('label')) {
-                    return -1;
-                }
-                return 1;
-            });
-
-        case actionTypes.SORT_BY_ALPHABET_REVERSE:
-            return state
-                .sort((a, b) => {
-                    if (a.get('label') < b.get('label')) {
-                        return -1;
-                    }
-                    return 1;
-                })
-                .reverse();
-
-        default:
-            return state;
-    }
-}
+// const initialState = Map({
+//     listTodos: List(localTodos.map((todo) => Map(todo))),
+//     sortingTitle: localSorting,
+// });
 
 export function TodoProvider({ children }) {
-    const [listTodos, dispatch] = React.useReducer(todosReducer, List(localTodos));
-
+    // this ugly initialState should be as it is to make tests work properly
+    const [state, dispatch] = React.useReducer(
+        todosReducer,
+        Map({
+            listTodos: List(
+                JSON.parse(localStorage.getItem('listTodos'))?.map((todo) => Map(todo))
+            ),
+            sortingTitle:
+                JSON.parse(localStorage.getItem('sortingTitle')) || sortingText.CREATION_DATE,
+        })
+    );
     const [isCompletedHidden, setHideCompleted] = React.useState(false);
 
-    const localSorting = JSON.parse(localStorage.getItem('sorting')) || `${sortState.BY_DATE}`;
-    const [sorting, updateSorting] = React.useState(localSorting);
-    const sortingRef = React.useRef(sortState.BY_DATE);
-
-    // React.useEffect(() => {
-    //     if (sorting === sortState.BY_DATE && sortingRef.current !== sortState.BY_DATE) {
-    //         // updateList(
-    //         //     [...list].sort((a, b) => {
-    //         //         if (a.created < b.created) {
-    //         //             return -1;
-    //         //         }
-    //         //         return 1;
-    //         //     })
-    //         // );
-    //         // sortingRef.current = sortState.BY_DATE;
-
-    //         // Immutable.js
-    //         updateTodos(
-    //             listTodos
-    //                 .map((item) => item.toObject())
-    //                 .sort((a, b) => {
-    //                     if (a.created < b.created) {
-    //                         return -1;
-    //                     }
-    //                     return 1;
-    //                 })
-    //                 .map((item) => Map(item))
-    //         );
-    //         sortingRef.current = sortState.BY_DATE;
-    //     }
-
-    //     if (sorting === sortState.ALPHABET && sortingRef.current !== sortState.ALPHABET) {
-    //         updateTodos(
-    //             [...listTodos].sort((a, b) => {
-    //                 if (a.label < b.label) {
-    //                     return -1;
-    //                 }
-    //                 return 1;
-    //             })
-    //         );
-    //         sortingRef.current = sortState.ALPHABET;
-
-    //         // Immutable.js
-    //         // updateList(
-    //         //     [...list.toArray()].map(item => item.toObject()).sort((a, b) => {
-    //         //         if (a.label < b.label) {
-    //         //             return -1;
-    //         //         }
-    //         //         return 1;
-    //         //     }).map(item => Map(item))
-    //         // );
-    //         // sortingRef.current = sortState.ALPHABET;
-    //     }
-
-    //     if (
-    //         sorting === sortState.ALPHABET_REVERSE &&
-    //         sortingRef.current !== sortState.ALPHABET_REVERSE
-    //     ) {
-    //         updateTodos(
-    //             [...listTodos]
-    //                 .sort((a, b) => {
-    //                     if (a.label < b.label) {
-    //                         return -1;
-    //                     }
-    //                     return 1;
-    //                 })
-    //                 .reverse()
-    //         );
-    //         sortingRef.current = sortState.ALPHABET_REVERSE;
-
-    //         // Immutable.js
-    //         // updateList(
-    //         //     [...list.toArray()]
-    //         //         .map(item => item.toObject())
-    //         //         .sort((a, b) => {
-    //         //             if (a.label < b.label) {
-    //         //                 return -1;
-    //         //             }
-    //         //             return 1;
-    //         //         })
-    //         //         .reverse()
-    //         //         .map(item => Map(item))
-    //         // );
-    //         sortingRef.current = sortState.ALPHABET_REVERSE;
-    //     }
-    // }, [sorting, listTodos]);
-
+    // saving every edit in localStorage:
     React.useEffect(() => {
-        const val = listTodos.size ? listTodos : null;
-
-        // Immutable.js
-        // let val = null;
-        // if (list.size) {
-        //     val = list.toArray();
-        // }
-        localStorage.setItem('todo-list', JSON.stringify(val));
-    }, [listTodos]);
-
-    React.useEffect(() => {
-        localStorage.setItem('sorting', JSON.stringify(sorting));
-    }, [sorting]);
+        localStorage.setItem('listTodos', JSON.stringify(state.get('listTodos')));
+        localStorage.setItem('sortingTitle', JSON.stringify(state.get('sortingTitle')));
+    }, [state]);
 
     const value = React.useMemo(
         () => ({
-            listTodos,
+            state,
             dispatch,
             isCompletedHidden,
             setHideCompleted,
-            sorting,
-            updateSorting,
         }),
-        [listTodos, dispatch, isCompletedHidden, setHideCompleted, sorting, updateSorting]
+        [state, dispatch, isCompletedHidden, setHideCompleted]
     );
 
     return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

@@ -5,12 +5,11 @@ import Fade from 'react-reveal/Fade';
 import Checkbox from '~ui/checkbox';
 import Label from '~ui/label';
 import TextareaAutosize from '~ui/textarea-autosize';
-import { actionTypes } from '../../todo-context';
-import TodoButton from '../todo-button';
+import { actionTypes } from '~todo-context/actionTypes';
 import './style.scss';
 
-function TodoItem({ data, dispatch, testId }) {
-    const { id, label, isCompleted, created } = data.toObject();
+function TodoItem({ todo, dispatch, testId }) {
+    const { id, label, isCompleted, created } = todo.toObject();
     const [editing, setEditing] = React.useState(false);
     const [value, setValue] = React.useState(label);
 
@@ -60,16 +59,25 @@ function TodoItem({ data, dispatch, testId }) {
                     )}
                 </div>
                 <span className="todo-item__created">{date}</span>
-                <TodoButton onClick={() => setEditing(true)} testid={`${label}-edit`}>
+                <button
+                    type="button"
+                    onClick={() => setEditing(true)}
+                    disabled={false}
+                    className="todo-item__action-btn"
+                    data-testid={`${label}-edit`}
+                >
                     Edit
-                </TodoButton>
+                </button>
                 <span className="todo-item__separator">/</span>
-                <TodoButton
+                <button
+                    type="button"
                     onClick={() => dispatch({ type: actionTypes.DELETE_TODO, id })}
-                    testid={`${label}-delete`}
+                    disabled={false}
+                    className="todo-item__action-btn"
+                    data-testid={`${label}-delete`}
                 >
                     Delete
-                </TodoButton>
+                </button>
             </div>
         </Fade>
     );

@@ -1,7 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Todo Functionality matches snapshot 1`] = `
-Array [
+<div
+  className="app"
+>
+  <h1
+    className="app__title"
+  >
+    Todo List
+  </h1>
   <form
     className="create-todo"
   >
@@ -23,7 +30,7 @@ Array [
     >
       Add
     </button>
-  </form>,
-  <div />,
-]
+  </form>
+  <div />
+</div>
 `;
