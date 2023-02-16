@@ -4,7 +4,6 @@
 import { List } from 'immutable';
 import React from 'react';
 import TodoItem from '~components/todo-item';
-import './style.scss';
 
 function TodosList({ listTodos, dispatch, isCompletedHidden, setHideCompleted }) {
     return (
