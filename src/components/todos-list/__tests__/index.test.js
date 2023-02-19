@@ -6,7 +6,7 @@ describe('TodosList', () => {
     test('matches snapshot', () => {
         let tree;
         act(() => {
-            tree = create(<TodosList />);
+            tree = create(<TodosList dispatch={() => undefined} isCompletedHidden={false} />);
         });
         expect(tree.toJSON()).toMatchSnapshot();
     });

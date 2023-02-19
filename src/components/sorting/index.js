@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+import PropTypes from 'prop-types';
 import React from 'react';
 import { actionTypes } from '~todo-context/actionTypes';
 import { sortingText } from '~todo-context/reducer';
@@ -29,16 +30,23 @@ function Sorting({ sortingTitle, dispatch }) {
     }, []);
 
     return (
-        <h3
-            className="sorting"
-            onClick={onHeaderlickHeader}
-            tabIndex="0"
-            ref={headerRef}
-            onKeyDown={onKeyDown}
-        >
-            ✨ Sort tasks by: {sortingTitle}
-        </h3>
+        <div className="sorting">
+            <h3
+                className="sorting__title"
+                onClick={onHeaderlickHeader}
+                tabIndex="0"
+                ref={headerRef}
+                onKeyDown={onKeyDown}
+            >
+                ✨ Sort tasks by: {sortingTitle}
+            </h3>
+        </div>
     );
 }
+
+Sorting.propTypes = {
+    sortingTitle: PropTypes.string.isRequired,
+    dispatch: PropTypes.func.isRequired,
+};
 
 export default React.memo(Sorting);

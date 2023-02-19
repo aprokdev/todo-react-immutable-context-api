@@ -1,8 +1,9 @@
 /* eslint-disable no-extra-boolean-cast */
+import PropTypes from 'prop-types';
 import React from 'react';
 import Button from '~ui/button';
 import Input from '~ui/input';
-import { actionTypes } from '../../todo-context/actionTypes';
+import { actionTypes } from '~todo-context/actionTypes';
 import './style.scss';
 
 function CreateTodo({ dispatch }) {
@@ -39,5 +40,9 @@ function CreateTodo({ dispatch }) {
         </form>
     );
 }
+
+CreateTodo.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+};
 
 export default React.memo(CreateTodo);

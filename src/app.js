@@ -6,6 +6,7 @@ import Sorting from '~components/sorting';
 import TodosList from '~components/todos-list';
 import { useTodos } from '~todo-context/index';
 import './app.scss';
+import { icon } from './img/image';
 
 function App() {
     const { state, dispatch, isCompletedHidden, setHideCompleted } = useTodos();
@@ -13,7 +14,10 @@ function App() {
     const sortingTitle = state.get('sortingTitle');
     return (
         <div className="app">
-            <h1 className="app__title">Todo List</h1>
+            <div className="app__head">
+                <h1 className="app__title">Todo List</h1>
+                <img src={icon} alt="" className="app__head-img" />
+            </div>
             <CreateTodo dispatch={dispatch} />
             {listTodos.size > 0 && <Sorting sortingTitle={sortingTitle} dispatch={dispatch} />}
             <TodosList

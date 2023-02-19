@@ -6,7 +6,7 @@ describe('Sorting', () => {
     test('matches snapshot', () => {
         let tree;
         act(() => {
-            tree = create(<Sorting />);
+            tree = create(<Sorting dispatch={() => undefined} sortingTitle="ALPHABET" />);
         });
         expect(tree.toJSON()).toMatchSnapshot();
     });

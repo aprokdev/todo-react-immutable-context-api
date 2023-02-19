@@ -2,10 +2,11 @@
 
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { List } from 'immutable';
+import PropTypes from 'prop-types';
 import React from 'react';
 import TodoItem from '~components/todo-item';
 
-function TodosList({ listTodos, dispatch, isCompletedHidden, setHideCompleted }) {
+function TodosList({ listTodos, dispatch, isCompletedHidden }) {
     return (
         <div>
             {!isCompletedHidden &&
@@ -36,5 +37,11 @@ function TodosList({ listTodos, dispatch, isCompletedHidden, setHideCompleted })
         </div>
     );
 }
+
+TodosList.propTypes = {
+    listTodos: PropTypes.instanceOf(List),
+    dispatch: PropTypes.func.isRequired,
+    isCompletedHidden: PropTypes.bool.isRequired,
+};
 
 export default React.memo(TodosList);

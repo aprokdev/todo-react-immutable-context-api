@@ -83,13 +83,15 @@ function TodoItem({ todo, dispatch, testId }) {
     );
 }
 
+export const TodoTypes = PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    isCompleted: PropTypes.bool,
+    label: PropTypes.string,
+    created: PropTypes.number,
+});
+
 TodoItem.propTypes = {
-    data: PropTypes.shape({
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        isCompleted: PropTypes.bool,
-        label: PropTypes.string,
-        created: PropTypes.number,
-    }),
+    todo: TodoTypes,
     dispatch: PropTypes.func,
     testId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };

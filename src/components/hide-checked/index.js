@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Checkbox from '~ui/checkbox';
 import Label from '~ui/label';
@@ -16,5 +17,10 @@ function HideChecked({ isCompletedHidden, setHideCompleted }) {
         </div>
     );
 }
+
+HideChecked.propTypes = {
+    isCompletedHidden: PropTypes.bool.isRequired,
+    setHideCompleted: PropTypes.func.isRequired,
+};
 
 export default React.memo(HideChecked);
