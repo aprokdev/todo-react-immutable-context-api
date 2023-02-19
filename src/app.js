@@ -6,7 +6,7 @@ import Sorting from '~components/sorting';
 import TodosList from '~components/todos-list';
 import { useTodos } from '~todo-context/index';
 import './app.scss';
-import { icon } from './img/image';
+import icon from './img/icon.svg';
 
 function App() {
     const { state, dispatch, isCompletedHidden, setHideCompleted } = useTodos();
