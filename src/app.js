@@ -5,8 +5,9 @@ import HideChecked from '~components/hide-checked';
 import Sorting from '~components/sorting';
 import TodosList from '~components/todos-list';
 import { useTodos } from '~todo-context/index';
+import jsIcon from '~img/icon.svg';
+import immutable from '~img/immutable.png';
 import './app.scss';
-import icon from './img/icon.svg';
 
 function App() {
     const { state, dispatch, isCompletedHidden, setHideCompleted } = useTodos();
@@ -16,7 +17,13 @@ function App() {
         <div className="app">
             <div className="app__head">
                 <h1 className="app__title">Todo List</h1>
-                <img src={icon} alt="" className="app__head-img" />
+                <img src={jsIcon} alt="JS" title="JavaScript" className="app__head-img" />
+                <img
+                    src={immutable}
+                    alt="immutable.js"
+                    title="Immutable.js"
+                    className="app__head-img app__head-img--immutable"
+                />
             </div>
             <CreateTodo dispatch={dispatch} />
             {listTodos.size > 0 && <Sorting sortingTitle={sortingTitle} dispatch={dispatch} />}

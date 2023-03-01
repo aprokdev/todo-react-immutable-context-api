@@ -26,6 +26,10 @@
         overflow: hidden;
     }
 
+    &__head-img--immutable {
+        object-fit: cover;
+    }
+
     &__title {
         text-align: center;
     }

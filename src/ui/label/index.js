@@ -21,4 +21,4 @@ Label.propTypes = {
     testId: PropTypes.string,
 };
 
-export default Label;
+export default React.memo(Label);
