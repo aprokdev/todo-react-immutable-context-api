@@ -1,7 +1,7 @@
 {
-  "name": "webpack5-react-babel",
+  "name": "todo-react-immutable-context-api",
   "version": "1.0.0",
-  "description": "webpack5-react-babel-template",
+  "description": "todo-react-immutable-context-api example",
   "main": "index.js",
   "homepage": "app.com",
   "scripts": {
