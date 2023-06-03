@@ -23,7 +23,7 @@ export function useTodos() {
 //     sortingTitle: localSorting,
 // });
 
-export function TodoProvider({ children }) {
+function TodoProvider({ children }) {
     // this ugly initialState should be as it is to make tests work properly
     const [state, dispatch] = React.useReducer(
         todosReducer,
@@ -55,3 +55,6 @@ export function TodoProvider({ children }) {
 
     return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 }
+
+export { TodoProvider };
+export default TodoProvider;
