@@ -6,7 +6,7 @@ import Sorting from '~components/sorting';
 import TodosList from '~components/todos-list';
 import { useTodos } from '~todo-context/index';
 import jsIcon from '~img/icon.svg';
-import immutable from '~img/immutable.png';
+import immutable from '~img/immutable-new.png';
 import './app.scss';
 
 function App() {
@@ -17,13 +17,22 @@ function App() {
         <div className="app">
             <div className="app__head">
                 <h1 className="app__title">Todo List</h1>
-                <img src={jsIcon} alt="JS" title="JavaScript" className="app__head-img" />
-                <img
-                    src={immutable}
-                    alt="immutable.js"
-                    title="Immutable.js"
-                    className="app__head-img app__head-img--immutable"
-                />
+                <a href="/" className="app__link">
+                    <img src={jsIcon} alt="JS" title="JavaScript" className="app__head-img" />
+                </a>
+                <a
+                    href="https://immutable-js.com/"
+                    className="app__link"
+                    target="__blank"
+                    rel="noreferer noopener"
+                >
+                    <img
+                        src={immutable}
+                        alt="immutable.js"
+                        title="Immutable.js"
+                        className="app__head-img"
+                    />
+                </a>
             </div>
             <CreateTodo dispatch={dispatch} />
             {listTodos.size > 0 && <Sorting sortingTitle={sortingTitle} dispatch={dispatch} />}

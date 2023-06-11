@@ -12,18 +12,30 @@ exports[`Todo Functionality matches snapshot 1`] = `
     >
       Todo List
     </h1>
-    <img
-      alt="JS"
-      className="app__head-img"
-      src=""
-      title="JavaScript"
-    />
-    <img
-      alt="immutable.js"
-      className="app__head-img app__head-img--immutable"
-      src=""
-      title="Immutable.js"
-    />
+    <a
+      className="app__link"
+      href="/"
+    >
+      <img
+        alt="JS"
+        className="app__head-img"
+        src=""
+        title="JavaScript"
+      />
+    </a>
+    <a
+      className="app__link"
+      href="https://immutable-js.com/"
+      rel="noreferer noopener"
+      target="__blank"
+    >
+      <img
+        alt="immutable.js"
+        className="app__head-img"
+        src=""
+        title="Immutable.js"
+      />
+    </a>
   </div>
   <form
     className="create-todo"
