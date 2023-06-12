@@ -71,14 +71,12 @@ function todosReducer(state, action) {
         case actionTypes.SORT_BY_ALPHABET_REVERSE:
             return state
                 .update('listTodos', (listTodos) =>
-                    listTodos
-                        .sort((a, b) => {
-                            if (a.get('label') < b.get('label')) {
-                                return -1;
-                            }
-                            return 1;
-                        })
-                        .reverse()
+                    listTodos.sort((a, b) => {
+                        if (a.get('label') > b.get('label')) {
+                            return -1;
+                        }
+                        return 1;
+                    })
                 )
                 .update('sortingTitle', () => sortingText.ALPHABET_REVERSE);
 
