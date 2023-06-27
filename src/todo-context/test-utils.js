@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { TodoProvider } from '~todo-context/index';
+import { TodoProvider } from '@todo-context/index';
 
 export function renderWithTodoProvider(ui, renderOptions) {
     function Wrapper({ children }) {

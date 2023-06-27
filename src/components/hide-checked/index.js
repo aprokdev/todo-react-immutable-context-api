@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Checkbox from '~ui/checkbox';
-import Label from '~ui/label';
+import Checkbox from '@ui/checkbox';
+import Label from '@ui/label';
 import './style.scss';
 
 function HideChecked({ isCompletedHidden, setHideCompleted }) {

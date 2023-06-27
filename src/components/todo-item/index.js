@@ -2,10 +2,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Fade from 'react-reveal/Fade';
-import Checkbox from '~ui/checkbox';
-import Label from '~ui/label';
-import TextareaAutosize from '~ui/textarea-autosize';
-import { actionTypes } from '~todo-context/actionTypes';
+import Checkbox from '@ui/checkbox';
+import Label from '@ui/label';
+import TextareaAutosize from '@ui/textarea-autosize';
+import { actionTypes } from '@todo-context/actionTypes';
 import './style.scss';
 
 function TodoItem({ todo, dispatch, testId }) {

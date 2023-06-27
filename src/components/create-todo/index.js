@@ -1,9 +1,9 @@
 /* eslint-disable no-extra-boolean-cast */
 import PropTypes from 'prop-types';
 import React from 'react';
-import Button from '~ui/button';
-import Input from '~ui/input';
-import { actionTypes } from '~todo-context/actionTypes';
+import Button from '@ui/button';
+import Input from '@ui/input';
+import { actionTypes } from '@todo-context/actionTypes';
 import './style.scss';
 
 function CreateTodo({ dispatch }) {

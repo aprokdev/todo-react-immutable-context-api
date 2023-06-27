@@ -14,15 +14,6 @@ export function useTodos() {
     return context;
 }
 
-// const localState = JSON.parse(localStorage.getItem('todo-state'));
-// const localTodos = localState ? localState.listTodos : [];
-// const localSorting = localState ? localState.sortingTitle : sortingText.CREATION_DATE;
-
-// const initialState = Map({
-//     listTodos: List(localTodos.map((todo) => Map(todo))),
-//     sortingTitle: localSorting,
-// });
-
 function TodoProvider({ children }) {
     // this ugly initialState should be as it is to make tests work properly
     const [state, dispatch] = React.useReducer(

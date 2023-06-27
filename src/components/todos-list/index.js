@@ -4,7 +4,7 @@
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';
-import TodoItem from '~components/todo-item';
+import TodoItem from '@components/todo-item';
 
 function TodosList({ listTodos, dispatch, isCompletedHidden }) {
     return (

@@ -3,8 +3,8 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import PropTypes from 'prop-types';
 import React from 'react';
-import { actionTypes } from '~todo-context/actionTypes';
-import { sortingText } from '~todo-context/reducer';
+import { actionTypes } from '@todo-context/actionTypes';
+import { sortingText } from '@todo-context/reducer';
 import './style.scss';
 
 function Sorting({ sortingTitle, dispatch }) {
