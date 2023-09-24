@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import './style.scss';
 
-function Label({ htmlFor, children, className, testId = 'label' }) {
+function Label(props) {
+    const { children, className, htmlFor, testId = 'label', disabled } = props;
+
     return (
         <label
-            className={`label${className ? ` ${className}` : ''}`}
+            className={`label${className ? ` ${className}` : ''}${disabled ? ' disabled' : ''}`}
             htmlFor={htmlFor}
             data-testid={testId}
         >
@@ -19,6 +21,7 @@ Label.propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     testId: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 export default React.memo(Label);

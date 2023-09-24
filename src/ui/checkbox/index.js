@@ -4,7 +4,7 @@ import React from 'react';
 import { IconCheck } from './icon';
 import './style.scss';
 
-function Checkbox({ className, checked, onChange, id, testId = 'checkbox' }) {
+function Checkbox({ className, checked, onChange, id, testId = 'checkbox', disabled }) {
     const inputRef = React.useRef(null);
 
     const onKeyDown = React.useCallback((event) => {
@@ -15,7 +15,10 @@ function Checkbox({ className, checked, onChange, id, testId = 'checkbox' }) {
     }, []);
 
     return (
-        <span className={`checkbox${className ? ` ${className}` : ''}`} data-testid={testId}>
+        <span
+            className={`checkbox${className ? ` ${className}` : ''}${disabled ? ' disabled' : ''}`}
+            data-testid={testId}
+        >
             <input
                 type="checkbox"
                 className="checkbox__input"
@@ -24,6 +27,7 @@ function Checkbox({ className, checked, onChange, id, testId = 'checkbox' }) {
                 onChange={onChange}
                 ref={inputRef}
                 data-testid={`${testId}-input`}
+                disabled={disabled}
             />
             <label
                 className="checkbox__square"
@@ -44,6 +48,7 @@ Checkbox.propTypes = {
     onChange: PropTypes.func.isRequired,
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     testId: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
 export default Checkbox;

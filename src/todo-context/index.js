@@ -18,20 +18,28 @@ function TodoProvider({ children }) {
     // this ugly initialState should be as it is to make tests work properly
     const [state, dispatch] = React.useReducer(
         todosReducer,
-        Map({
-            listTodos: List(
+        { listTodos: [], isSavedTodos: false, sortingTitle: sortingText.CREATION_DATE },
+        () => {
+            const LSTodos = List(
                 JSON.parse(localStorage.getItem('listTodos'))?.map((todo) => Map(todo))
-            ),
-            sortingTitle:
-                JSON.parse(localStorage.getItem('sortingTitle')) || sortingText.CREATION_DATE,
-        })
+            );
+            return Map({
+                listTodos: LSTodos,
+                isSavedTodos: Boolean(List.isList(LSTodos) && LSTodos.size),
+                sortingTitle:
+                    JSON.parse(localStorage.getItem('sortingTitle')) || sortingText.CREATION_DATE,
+            });
+        }
     );
     const [isCompletedHidden, setHideCompleted] = React.useState(false);
 
     // saving every edit in localStorage:
     React.useEffect(() => {
-        localStorage.setItem('listTodos', JSON.stringify(state.get('listTodos')));
-        localStorage.setItem('sortingTitle', JSON.stringify(state.get('sortingTitle')));
+        console.log('lol', state.get('isSavedTodos'));
+        if (state.get('isSavedTodos')) {
+            localStorage.setItem('listTodos', JSON.stringify(state.get('listTodos')));
+            localStorage.setItem('sortingTitle', JSON.stringify(state.get('sortingTitle')));
+        }
     }, [state]);
 
     const value = React.useMemo(

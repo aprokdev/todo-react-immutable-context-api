@@ -1,11 +1,21 @@
 @import '@styles/vars';
 
 .todo-item {
+    position: relative;
     display: flex;
     align-items: center;
     padding: 16px 0;
     line-height: 24px;
     border-bottom: 1px solid #eee;
+    transition: ease-in 0.5s;
+    &--invisible {
+        top: 30px;
+        opacity: 0;
+    }
+    &--visible {
+        top: 0;
+        opacity: 1;
+    }
 
     &__check-group {
         display: flex;
@@ -21,6 +31,7 @@
         color: $primary;
         background-color: transparent;
         border: none;
+        text-transform: uppercase;
         cursor: pointer;
 
         &:active {
@@ -61,11 +72,5 @@
         @media (min-width: $ipad-portrait) {
             display: block;
         }
-    }
-
-    .button {
-        flex-shrink: 0;
-        width: 130px;
-        margin-left: 16px;
     }
 }

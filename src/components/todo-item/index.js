@@ -30,6 +30,14 @@ function TodoItem({ todo, dispatch, testId }) {
         });
     }, [created]);
 
+    const onEditClick = React.useCallback(
+        (event) => {
+            event.preventDefault();
+            setEditing(true);
+        },
+        [setEditing]
+    );
+
     return (
         <Fade bottom>
             <div className="todo-item" data-testid={`todo-item${testId ? `-${testId}` : ''}`}>
@@ -61,7 +69,7 @@ function TodoItem({ todo, dispatch, testId }) {
                 <span className="todo-item__created">{date}</span>
                 <button
                     type="button"
-                    onClick={() => setEditing(true)}
+                    onClick={onEditClick}
                     disabled={false}
                     className="todo-item__action-btn"
                     data-testid={`${label}-edit`}

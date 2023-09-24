@@ -14,35 +14,43 @@ export const sortingText = {
 function todosReducer(state, action) {
     switch (action.type) {
         case actionTypes.ADD_TODO:
-            return state.update('listTodos', (listTodos) =>
-                listTodos.push(
-                    Map({
-                        id: Number(new Date()),
-                        label: action.text.trim(),
-                        isCompleted: false,
-                        created: Number(new Date()),
-                    })
+            return state
+                .update('listTodos', (listTodos) =>
+                    listTodos.push(
+                        Map({
+                            id: Number(new Date()),
+                            label: action.text.trim(),
+                            isCompleted: false,
+                            created: Number(new Date()),
+                        })
+                    )
                 )
-            );
+                .update('isSavedTodos', (isSavedTodos) => true);
 
         case actionTypes.CHECK_TODO:
-            return state.update('listTodos', (listTodos) =>
-                listTodos.update(findIndex(listTodos, action.id), (data) =>
-                    data.set('isCompleted', action.checked)
+            return state
+                .update('listTodos', (listTodos) =>
+                    listTodos.update(findIndex(listTodos, action.id), (data) =>
+                        data.set('isCompleted', action.checked)
+                    )
                 )
-            );
+                .update('isSavedTodos', (isSavedTodos) => true);
 
         case actionTypes.DELETE_TODO:
-            return state.update('listTodos', (listTodos) =>
-                listTodos.delete(findIndex(listTodos, action.id))
-            );
+            return state
+                .update('listTodos', (listTodos) =>
+                    listTodos.delete(findIndex(listTodos, action.id))
+                )
+                .update('isSavedTodos', (isSavedTodos) => true);
 
         case actionTypes.EDIT_TODO:
-            return state.update('listTodos', (listTodos) =>
-                listTodos.update(findIndex(listTodos, action.id), (todo) =>
-                    todo.set('label', action.text)
+            return state
+                .update('listTodos', (listTodos) =>
+                    listTodos.update(findIndex(listTodos, action.id), (todo) =>
+                        todo.set('label', action.text)
+                    )
                 )
-            );
+                .update('isSavedTodos', (isSavedTodos) => true);
 
         case actionTypes.SORT_BY_DATE:
             return state
@@ -54,7 +62,8 @@ function todosReducer(state, action) {
                         return 1;
                     })
                 )
-                .update('sortingTitle', () => sortingText.CREATION_DATE);
+                .update('sortingTitle', () => sortingText.CREATION_DATE)
+                .update('isSavedTodos', (isSavedTodos) => true);
 
         case actionTypes.SORT_BY_ALPHABET:
             return state
@@ -66,7 +75,8 @@ function todosReducer(state, action) {
                         return 1;
                     })
                 )
-                .update('sortingTitle', () => sortingText.ALPHABET);
+                .update('sortingTitle', () => sortingText.ALPHABET)
+                .update('isSavedTodos', (isSavedTodos) => true);
 
         case actionTypes.SORT_BY_ALPHABET_REVERSE:
             return state
@@ -78,7 +88,12 @@ function todosReducer(state, action) {
                         return 1;
                     })
                 )
-                .update('sortingTitle', () => sortingText.ALPHABET_REVERSE);
+                .update('sortingTitle', () => sortingText.ALPHABET_REVERSE)
+                .update('isSavedTodos', (isSavedTodos) => true);
+
+        case actionTypes.CLEAN_LS:
+            localStorage.clear();
+            return state.update('isSavedTodos', (isSavedTodos) => false);
 
         default:
             return state;
