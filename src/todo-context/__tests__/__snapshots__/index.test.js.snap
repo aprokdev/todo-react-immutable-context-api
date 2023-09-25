@@ -60,5 +60,12 @@ exports[`Todo Functionality matches snapshot 1`] = `
     </button>
   </form>
   <div />
+  <div
+    className="app__bottom"
+  >
+    <div
+      className="clear-local-storage"
+    />
+  </div>
 </div>
 `;

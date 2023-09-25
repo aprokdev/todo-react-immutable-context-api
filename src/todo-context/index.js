@@ -35,7 +35,6 @@ function TodoProvider({ children }) {
 
     // saving every edit in localStorage:
     React.useEffect(() => {
-        console.log('lol', state.get('isSavedTodos'));
         if (state.get('isSavedTodos')) {
             localStorage.setItem('listTodos', JSON.stringify(state.get('listTodos')));
             localStorage.setItem('sortingTitle', JSON.stringify(state.get('sortingTitle')));
