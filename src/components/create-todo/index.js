@@ -9,11 +9,14 @@ import './style.scss';
 function CreateTodo({ dispatch }) {
     const [text, updateText] = React.useState('');
 
+    const inputRef = React.useRef();
+
     const createTodo = React.useCallback(
         (event) => {
             event.preventDefault();
             if (text) dispatch({ type: actionTypes.ADD_TODO, text });
             updateText('');
+            inputRef.current.focus();
         },
         [text, dispatch]
     );
@@ -33,6 +36,7 @@ function CreateTodo({ dispatch }) {
                 onChange={onChange}
                 id="new-todo-input"
                 testId="todo-input"
+                ref={inputRef}
             />
             <Button type="submit" onClick={createTodo} disabled={!text} testId="todo-create-btn">
                 Add
