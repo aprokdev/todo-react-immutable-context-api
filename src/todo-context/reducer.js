@@ -18,7 +18,7 @@ function todosReducer(state, action) {
                 .update('listTodos', (listTodos) =>
                     listTodos.push(
                         Map({
-                            id: Number(new Date()),
+                            id: String(Number(new Date())),
                             label: action.text.trim(),
                             isCompleted: false,
                             created: Number(new Date()),

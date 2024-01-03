@@ -16,7 +16,9 @@ function CreateTodo({ dispatch }) {
             event.preventDefault();
             if (text) dispatch({ type: actionTypes.ADD_TODO, text });
             updateText('');
-            inputRef.current.focus();
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
         },
         [text, dispatch]
     );
